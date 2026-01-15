@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelPlanner - 您的智能旅行規劃助手</title>
+    <!-- add css and other external link-->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.11.4/dist/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50">
+    <!-- The title -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <span class="text-2xl font-bold text-blue-600">Travel Planner</span>
+                    </a>
+                </div>
+                
+                <!-- link jump to other page-->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#destinations" class="nav-link text-gray-700 hover:text-blue-600 font-medium">目的地推薦</a>
+                    <a href="#itinerary" class="nav-link text-gray-700 hover:text-blue-600 font-medium">行程規劃</a>
+                    <a href="#ai-assistant" class="nav-link text-gray-700 hover:text-blue-600 font-medium">AI旅行助手</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-toggle" class="text-gray-700 focus:outline-none">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- link menu -->
+            <div id="mobile-menu" class="md:hidden hidden pt-4 pb-2">
+                <a href="#destinations" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">目的地推薦</a>
+                <a href="#itinerary" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">行程規劃</a>
+                <a href="#ai-assistant" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">AI旅行助手</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- The introduction page -->
+    <section class="hero-section flex items-center justify-center">
+        <div class="hero-pattern"></div>
+        <div class="container mx-auto px-4 py-20 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 text-white mb-10 md:mb-0 hero-content">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                        探索世界，<br>
+                        <span class="text-orange-400">規劃完美旅程</span>
+                    </h1>
+                    <p class="text-lg md:text-xl mb-8 text-blue-100 max-w-lg">
+                        發現令人驚嘆的目的地，創建個性化行程，獲取AI旅行建議，讓您的旅行體验無與倫比。
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#destinations" class="btn-primary text-white font-medium py-3 px-6 rounded-lg text-center">
+                            探索目的地
+                        </a>
+                        <a href="#itinerary" class="btn-secondary text-white font-medium py-3 px-6 rounded-lg text-center">
+                            開始規劃
+                        </a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/3dcd2441e811406fb87623a387e0bd4e~tplv-a9rns2rl98-image.image?rcl=2025121916463823609B981F078A0B1FA5&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1768726078&x-signature=70dyCn%2Bjgv1AiBM1KyJV2OtjAXY%3D" 
+                         alt="旅行目的地" 
+                         class="rounded-lg shadow-2xl max-w-full h-auto earth-animation" />
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The recommend place -->
+    <section id="destinations" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">熱門目的地</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    探索世界各地的精選景點，從繁華都市到自然奇觀，我們為您推薦了最值得一去的旅遊勝地。
+                </p>
+            </div>
+            
+            <!-- The place classification button -->
+            <div class="flex flex-wrap justify-center mb-12 gap-4">
+                <button class="destination-filter active bg-blue-600 text-white px-6 py-2 rounded-full font-medium transition-all hover:bg-blue-700" data-filter="all">
+                    全部
+                </button>
+                <button class="destination-filter bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition-all hover:bg-gray-300" data-filter="asia">
+                    亞洲
+                </button>
+                <button class="destination-filter bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition-all hover:bg-gray-300" data-filter="europe">
+                    歐洲
+                </button>
+                <button class="destination-filter bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition-all hover:bg-gray-300" data-filter="america">
+                    美洲
+                </button>
+                <button class="destination-filter bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-medium transition-all hover:bg-gray-300" data-filter="oceania">
+                    大洋洲
+                </button>
+            </div>
+            
+            <!-- place block -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tokyo -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="asia">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/labis/29f21c4fc0a6287dce686da3b94cb42f~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686035&x-signature=2HlKS3pd%2FWScslqhuYKYqkbE368%3D" 
+                             alt="東京鐵塔" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            亞洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">東京，日本</h3>
+                        <p class="text-gray-600 mb-4">
+                            探索這座融合傳統與現代的大都市，體驗日本獨特的文化魅力。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">熱門景點：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    東京鐵塔
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    淺草寺
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    明治神宮
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="東京" data-attractions='["東京鐵塔", "淺草寺", "明治神宮"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Paris -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="europe">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/labis/172cc554c4c276debf4878dbb4f52fe6~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686035&x-signature=zaSW8zw11gS5OmggJs7xArpYzJ4%3D" 
+                             alt="艾菲爾鐵塔" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-green-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            歐洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">巴黎，法國</h3>
+                        <p class="text-gray-600 mb-4">
+                            浪漫之都，藝術與時尚的中心，擁有世界著名的博物館和建築。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">熱門景點：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    艾菲爾鐵塔
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    羅浮宮
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    巴黎聖母院
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="巴黎" data-attractions='["艾菲爾鐵塔", "羅浮宮", "巴黎聖母院"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- New York -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="america">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p11-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/1926867541946793997~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686035&x-signature=iyqmcOA7pFPkKmeTw1Kar%2BW3Ink%3D" 
+                             alt="自由女神像" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-red-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            美洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">紐約，美國</h3>
+                        <p class="text-gray-600 mb-4">
+                            大蘋果城，世界金融與文化中心，令人印象深刻的天際線。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">熱門景點：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    自由女神像
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    中央公園
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    帝國大廈
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="紐約" data-attractions='["自由女神像", "中央公園", "帝國大廈"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- London -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="europe">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p3-doubao-search-sign.byteimg.com/labis/bdbc7bb06185819dff0019e5e03ac1d5~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686050&x-signature=hBl0zKd6bKGh2ga85GfI6YV0Ah8%3D" 
+                             alt="大本鐘" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-green-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            歐洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">倫敦，英國</h3>
+                        <p class="text-gray-600 mb-4">
+                            霧都，擁有豐富歷史文化遺產和現代化都市魅力的國際大都市。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">熱門景點：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    大本鐘
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    倫敦眼
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    白金漢宮
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="倫敦" data-attractions='["大本鐘", "倫敦眼", "白金漢宮"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Sydney -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="oceania">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p26-doubao-search-sign.byteimg.com/labis/0f3badd21244e60ecd5fb98e3ccbb86f~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686050&x-signature=VyDSet7XBTxOWY4n%2BSp4%2BQ8Akb0%3D" 
+                             alt="雪梨歌劇院" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-yellow-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            大洋洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">雪梨，澳大利亞</h3>
+                        <p class="text-gray-600 mb-4">
+                            陽光之城，擁有世界著名的歌劇院和美麗的海港風光。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">熱門景點：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    雪梨歌劇院
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    雪梨海港大橋
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-red-500"></i>
+                                    邦迪海灘
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="雪梨" data-attractions='["雪梨歌劇院", "雪梨海港大橋", "邦迪海灘"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!--  Sensoji Temple -->
+                <div class="destination-card bg-white rounded-xl overflow-hidden shadow-lg" data-category="asia">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://p3-doubao-search-sign.byteimg.com/tos-cn-i-be4g95zd3a/1088443746176860163~tplv-be4g95zd3a-image.jpeg?rk3s=542c0f93&x-expires=1781686050&x-signature=PkGR3UuDGRMiRG4Pq%2B9mQieapTM%3D" 
+                             alt="淺草寺" 
+                             class="destination-image w-full h-full object-cover" />
+                        <div class="absolute top-4 right-4 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full">
+                            亞洲
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2 text-gray-800">淺草寺，日本</h3>
+                        <p class="text-gray-600 mb-4">
+                            東京最古老的寺廟，感受傳統日本文化的魅力所在。
+                        </p>
+                        <div class="mb-4">
+                            <h4 class="font-semibold text-gray-800 mb-2">景點特色：</h4>
+                            <ul class="text-gray-600 space-y-1">
+                                <li class="flex items-center">
+                                    <i data-lucide="clock" class="w-4 h-4 mr-2 text-blue-500"></i>
+                                    建議遊玩2-3小時
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="camera" class="w-4 h-4 mr-2 text-blue-500"></i>
+                                    雷門和仲見世商店街
+                                </li>
+                                <li class="flex items-center">
+                                    <i data-lucide="utensils" class="w-4 h-4 mr-2 text-blue-500"></i>
+                                    品嚐當地特色小吃
+                                </li>
+                            </ul>
+                        </div>
+                        <button class="add-to-itinerary w-full bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors" data-city="東京" data-attractions='["淺草寺"]'>
+                            添加到行程
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D Earth  -->
+    <section class="py-20 bg-gray-900 text-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">探索世界</h2>
+                <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+                    通過3D地球，探索世界各地的熱門旅遊目的地。
+                </p>
+            </div>
+            <div id="earth-container" class="rounded-xl overflow-hidden shadow-2xl"></div>
+        </div>
+    </section>
+
+    <!-- Travel Planner -->
+    <section id="itinerary" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">行程規劃</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    創建您的個性化旅行計劃，安排每日行程，讓您的旅程更加簡單管理和豐富。
+                </p>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6 md:p-8 mb-12">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">我的行程</h3>
+                        <p class="text-gray-600">規劃您的完美旅程</p>
+                    </div>
+                    <div class="mt-4 md:mt-0">
+                        <button id="new-itinerary" class="bg-blue-600 text-white font-medium py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                            創建新行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- List of itinerary -->
+                <div id="itinerary-form" class="mb-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label for="itinerary-name" class="block text-gray-700 font-medium mb-2">行程名稱</label>
+                            <input type="text" id="itinerary-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="例如：東京5日遊">
+                        </div>
+                        <div>
+                            <label for="itinerary-dates" class="block text-gray-700 font-medium mb-2">旅行日期</label>
+                            <div class="flex items-center space-x-2">
+                                <input type="date" id="start-date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                <span class="text-gray-500">至</span>
+                                <input type="date" id="end-date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="itinerary-notes" class="block text-gray-700 font-medium mb-2">旅行筆記</label>
+                        <textarea id="itinerary-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="添加您的旅行想法、預算或其他重要信息..."></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button id="save-itinerary" class="bg-blue-600 text-white font-medium py-2 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                            保存行程
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Time table -->
+                <div id="itinerary-timeline" class="border-t border-gray-200 pt-8">
+                    <h4 class="text-xl font-bold text-gray-800 mb-6">行程安排</h4>
+                    
+                    <div id="days-container">
+                        <div class="text-center text-gray-500 py-12">
+                            <i data-lucide="calendar" class="w-16 h-16 mx-auto mb-4 text-gray-300"></i>
+                            <p class="text-lg">您還沒有添加任何行程安排</p>
+                            <p class="mt-2">從目的地推薦中選擇景點添加到行程，或點擊"創建新行程"開始規劃</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- saved itineraries -->
+            <div id="saved-itineraries">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">已保存的行程</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI chatbot (not applying ai chaatbot) -->
+    <section id="ai-assistant" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">AI旅行助手</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                    有任何旅行問題？AI助手隨時為您提供建議和解答，幫助您規劃完美旅程。
+                </p>
+            </div>
+            
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="bg-blue-600 text-white p-4 flex items-center">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/940db655332948d49b35eeb4079a42db~tplv-a9rns2rl98-image.image?rcl=202512192113146ED7B022D8A76A9A583A&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1768742006&x-signature=Sh2Hqff0LkAOGfS%2Bw%2F0j4XtQb0I%3D" 
+                             alt="AI旅行助手" 
+                             class="w-10 h-10 rounded-full object-cover mr-3" />
+                        <div>
+                            <h3 class="font-bold">旅行助手</h3>
+                            <p class="text-sm text-blue-100">隨時為您提供旅行建議</p>
+                        </div>
+                    </div>
+                    
+
+                    <div id="chat-messages" class="p-4 h-96 overflow-y-auto bg-gray-50">
+                        <div class="chat-message flex mb-4">
+                            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/940db655332948d49b35eeb4079a42db~tplv-a9rns2rl98-image.image?rcl=202512192113146ED7B022D8A76A9A583A&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1768742006&x-signature=Sh2Hqff0LkAOGfS%2Bw%2F0j4XtQb0I%3D" 
+                                 alt="AI旅行助手" 
+                                 class="w-8 h-8 rounded-full object-cover mr-2 flex-shrink-0" />
+                            <div class="bg-white p-3 rounded-lg shadow max-w-[80%]">
+                                <p>您好！我是您的AI旅行助手。有什麼可以幫您規劃旅行的問題嗎？</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- The input message -->
+                    <div class="p-4 border-t border-gray-200">
+                        <div class="flex">
+                            <input type="text" id="chat-input" class="flex-1 px-4 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="輸入您的問題...">
+                            <button id="send-message" class="bg-blue-600 text-white px-6 py-2 rounded-r-lg hover:bg-blue-700 transition-colors">
+                                <i data-lucide="send" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                        <div class="mt-2 text-sm text-gray-500">
+                            <p>試試這些問題：</p>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <button class="quick-question bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors">東京最佳旅遊季節？</button>
+                                <button class="quick-question bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors">巴黎必去景點？</button>
+                                <button class="quick-question bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full transition-colors">如何規劃歐洲多國遊？</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Travel Planner</h3>
+                    <p class="text-gray-400 mb-4">
+                        您的智能旅行規劃助手，讓每一次旅行都變得簡單而難忘。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i data-lucide="youtube" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速鏈接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#destinations" class="text-gray-400 hover:text-white transition-colors">目的地推薦</a></li>
+                        <li><a href="#itinerary" class="text-gray-400 hover:text-white transition-colors">行程規劃</a></li>
+                        <li><a href="#ai-assistant" class="text-gray-400 hover:text-white transition-colors">AI旅行助手</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">關於我們</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition-colors">聯繫方式</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">訂閱更新</h3>
+                    <p class="text-gray-400 mb-4">
+                        訂閱我們的新聞通訊，獲取最新的旅行靈感和技巧。
+                    </p>
+                    <div class="flex">
+                        <input type="email" class="px-4 py-2 w-full rounded-l-lg focus:outline-none text-gray-800" placeholder="您的郵箱地址">
+                        <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg transition-colors">
+                            訂閱
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500">
+                <p>&copy; 2025 Travel Planner. 保留所有權利。</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="modal-title" class="text-xl font-bold text-gray-800">添加到行程</h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <div id="modal-content">
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="modal-cancel" class="bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg mr-2 hover:bg-gray-300 transition-colors">
+                        取消
+                    </button>
+                    <button id="modal-confirm" class="bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">
+                        確認
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- link a java script. -->
+    <script src="js/script.js"></script>
+</body>
+</html>
