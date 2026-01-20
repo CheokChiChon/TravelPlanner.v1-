@@ -1,5 +1,5 @@
 # README
-# 🌍 Travel Planner — MVP
+# 🌍 Travel Planner 
 ### Travel Planner is a lightweight, all-in-one travel planning tool designed for casual travelers and detail-oriented planners alike.
 It integrates destination exploration, personalized itinerary building, and AI-powered travel assistance into a clean, no-login interface—all data stored locally for convenience and privacy.  
 This repository contains the MVP implementation with a static web demo, leveraging modern front-end technologies to deliver a smooth, intuitive planning experience without backend dependencies.  
